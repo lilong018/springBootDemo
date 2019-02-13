@@ -1,0 +1,36 @@
+server:
+  port: 8082
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 800
+    min-spare-threads: 30
+#\u6570\u636E\u5E93\u8FDE\u63A5
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/testLL?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+  # \u6A21\u677F\u5F15\u64CE
+  thymeleaf:
+    mode: HTML
+    encoding: utf-8
+    # \u7981\u7528\u7F13\u5B58
+    cache: false
+# MyBatis
+mybatis:
+  typeAliasesPackage: com.example.demo
+  mapperLocations: classpath:mybatis/**/*Mapper.xml
+  configLocation: classpath:mybatis/mybatis-config.xml
+
+logging:
+  level:
+    com.example: debug
+# PageHelper\u5206\u9875\u63D2\u4EF6
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
