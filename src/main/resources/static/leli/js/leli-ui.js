@@ -1,6 +1,6 @@
 /**
  * 通用js方法封装处理
- * Copyright (c) 2018 sunluyang
+ * Copyright (c)
  */
 (function ($) {
     $.extend({
@@ -440,7 +440,7 @@
             	$.modal.confirm("确定删除该条" + $.table._option.modalName + "信息吗？", function() {
 	            	var url = $.common.isEmpty(id) ? $.table._option.removeUrl : $.table._option.removeUrl.replace("{id}", id);
 	            	var data = { "ids": id };
-	            	$.operate.submit(url, "post", "json", data);
+	            	$.operate.submit(url, "delete", "json", data);
             	});
             },
             // 批量删除信息
@@ -453,14 +453,14 @@
         		$.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
         			var url = $.table._option.removeUrl;
         			var data = { "ids": rows.join() };
-        			$.operate.submit(url, "post", "json", data);
+        			$.operate.submit(url, "delete", "json", data);
         		});
             },
             // 清空信息
             clean: function() {
             	$.modal.confirm("确定清空所有" + $.table._option.modalName + "吗？", function() {
 	            	var url = $.table._option.cleanUrl;
-	            	$.operate.submit(url, "post", "json", "");
+	            	$.operate.submit(url, "delete", "json", "");
             	});
             },
             // 添加信息
@@ -514,7 +514,7 @@
             	$.modal.loading("正在处理中，请稍后...");
             	var config = {
         	        url: url,
-        	        type: "post",
+        	        type: "put",
         	        dataType: "json",
         	        data: data,
         	        success: function(result) {

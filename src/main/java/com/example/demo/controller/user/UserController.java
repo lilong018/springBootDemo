@@ -6,7 +6,9 @@ import com.example.demo.domain.page.TableDataInfo;
 import com.example.demo.domain.user.User;
 import com.example.demo.service.IUserService;
 import com.example.demo.utils.AjaxResult;
+import com.example.demo.utils.PageTool;
 import com.example.demo.utils.StringUtils;
+import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -29,9 +32,11 @@ public class UserController extends BaseController {
      *进入页面
      */
     @GetMapping()
-    public String user(Model mmap) {
+    public String user(Model mmap, HttpServletRequest request,@RequestParam(value = "page", defaultValue = "1") int page) {
+        PageHelper.startPage(page,5);
         List<User> list = userService.selectUserList();
         mmap.addAttribute("list",list);
+        mmap.addAttribute("page", PageTool.getInstance().setData(list,request).render());
         return "user/user";
     }
 
@@ -79,7 +84,7 @@ public class UserController extends BaseController {
     /**
      * 修改用户
      */
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult editSave(User user)
@@ -87,7 +92,11 @@ public class UserController extends BaseController {
         return toAjax(userService.updateUser(user));
     }
 
-    @PostMapping("/remove")
+    /**
+     *  通过用户id批量删除用户
+     */
+    @DeleteMapping("/remove")
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     public AjaxResult remove(String ids)
     {

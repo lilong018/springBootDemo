@@ -133,7 +133,7 @@
         	var status = $("input[name='status']").is(':checked') == true ? 0 : 1;
         	$.ajax({
         		cache : true,
-        		type : "POST",
+        		type : "PUT",
         		url : ctx + "user/edit",
         		data : {
         			"userId": userId,
