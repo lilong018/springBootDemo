@@ -35,6 +35,11 @@ public class UserServiceImpl implements IUserService{
         return userMapper.updateUser(user);
     }
 
+    @Override
+    public int deleteUser(Long userId) {
+        return userMapper.deleteUser(userId);
+    }
+
 
     @Override
     public int deleteUserByIds(String ids) throws Exception {

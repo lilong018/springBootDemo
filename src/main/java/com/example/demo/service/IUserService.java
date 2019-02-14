@@ -13,6 +13,8 @@ public interface IUserService {
 
     public int updateUser(User user);
 
+    public int deleteUser(Long userId);
+
     public int deleteUserByIds(String ids) throws Exception;
 
 }

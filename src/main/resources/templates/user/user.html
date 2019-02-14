@@ -10,7 +10,7 @@
 <div class="container-div ui-layout-center">
     <div class="row">
         <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-success" onclick="$.operate.add()">
+            <a class="btn btn-success" href="/user/add">
                 <i class="fa fa-plus"></i> 新增
             </a>
             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()">
@@ -70,9 +70,12 @@
                     <td align="center"><span th:if="${user.status} == 0">正常</span><span th:if="${user.status} == 1">停用</span></td>
                     <td th:text="${#calendars.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td align="center">
-                        <a class="btn btn-success btn-xs " href="#" onclick="$.operate.edit(${user.userId})"><i class="fa fa-edit"></i>编辑</a>
+                        <a class="btn btn-success btn-xs " th:href="@{'user/edit/'+${user.userId}}"><i class="fa fa-edit"></i>编辑</a>
+                        <a class="btn btn-danger btn-xs del" th:data-id="${user.userId}"  href="javascript:void(0)"><i class="fa fa-remove"></i>删除</a>
+                       <!-- <a class="btn btn-danger btn-xs del" th:data-id="${user.userId}" th:href="@{'user/remove/'+${user.userId}}"><i class="fa fa-remove"></i>删除</a>-->
+                        <!--<a class="btn btn-success btn-xs " href="#" onclick="$.operate.edit(${user.userId})"><i class="fa fa-edit"></i>编辑</a>
                         <a class="btn btn-danger btn-xs " href="#" onclick="$.operate.remove(${user.userId})"><i class="fa fa-remove"></i>删除</a>
-                        <a class="btn btn-info btn-xs" href="#" onclick="resetPwd(${user.userId})"><i class="fa fa-key"></i>重置</a>
+                        <a class="btn btn-info btn-xs" href="#" onclick="resetPwd(${user.userId})"><i class="fa fa-key"></i>重置</a>-->
                     </td>
                 </tr>
                 </tbody>
@@ -84,6 +87,8 @@
 <div th:include="include :: footer"></div>
 <script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
 <script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+</body>
+</html>
 <script th:inline="javascript">
     var prefix = ctx + "user";
 
@@ -166,6 +171,23 @@
         var url = prefix + '/resetPwd/' + userId;
         $.modal.open("重置密码", url, '800', '300');
     }
+
+    $(".del").click(function () {
+        console.log("进入del事件");
+        let $th = $(this);
+        var userId = $th.attr("data-id");
+
+        $.ajax({
+            cache : true,
+            type : "delete",
+            url : ctx + "user/remove/"+userId,
+            async : false,
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                location.reload();
+            }
+        });
+    })
 </script>
-</body>
-</html>
