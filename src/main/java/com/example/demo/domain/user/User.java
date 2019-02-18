@@ -4,24 +4,30 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
     /** 用户ID */
+    @NotNull(message = "主键不能为空",groups = {User.class})
     private Long userId;
 
     /** 登录名称 */
+    @NotEmpty(message = "登录名称不能为空")
     private String loginName;
 
     /** 用户名称 */
     private String userName;
 
     /** 用户邮箱 */
+    @Email(message = "邮箱格式错误")
     private String email;
 
     /** 手机号码 */
+    @NotNull(message = "手机号不能为空")
+    @Pattern(regexp = "^(((13[0-9])|(14[579])|(15([0-3]|[5-9]))|(16[6])|(17[0135678])|(18[0-9])|(19[89]))\\d{8})$", message = "手机号格式错误")
     private String phonenumber;
 
     /** 用户性别 */
@@ -31,6 +37,8 @@ public class User {
     private String avatar;
 
     /** 密码 */
+    @Min(value = 6,message = "密码长度最小为6位")
+    @Max(value = 12,message = "密码长度不得超狗12")
     private String password;
 
     /** 帐号状态（0正常 1停用） */

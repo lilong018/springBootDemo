@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="utf-8">
+    <!--<head th:include="include :: header"></head>-->
+    <head th:insert="~{include :: header}"></head>
+    <body class="gray-bg">
+        <div class="container-div">
+            <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <button class="btn btn-success up-all">全部收起</button>
+                <button class="btn btn-primary down-all">全部展开</button>
+                <button class="btn btn-info get-checked">获取选中</button>
+                <div class="col-sm-12 select-table table-striped">
+                    <table class="table full-color-table full-muted-table hover-table layui-table layui-form" id="tree-table">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!--<div th:include="include :: footer"></div>-->
+        <div th:insert="~{include :: footer}"></div>
+        <script th:inline="javascript">
+            let data = JSON.parse('[(${menus})]');
+            /* let data = [(${menus})];*/
+            let prefix = ctx + "menu";
+
+            layui.use(['treetable', 'form'], function () {
+                let o = layui.$, treetable = layui.treetable;
+                let form = layui.form, layer = layui.layer;
+                treetable.render({
+                    field:"menuName",
+                    is_checkbox: true,
+                    treeSpid: 0,//最上级的父级id
+                    treeIdName: 'id',//id字段的名称
+                    treePidName: 'pid',//pid字段的名称
+                    treeDefaultClose: false,//是否默认折叠
+                    treeLinkage: true,//父级展开时是否自动展开所有子级
+                    elem: '#tree-table',
+                    data: data,
+                    is_checkbox: true,
+                    page: false,
+                    cols: [
+                        {
+                            field: 'menuName',
+                            title: '菜单名称',
+                            width: '20%',
+                            formatter: function (value, row, index) {
+                                if ($.common.isEmpty(row.icon)) {
+                                    return row.menuName;
+                                } else {
+                                    return '<i class="' + row.icon + '"></i> <span class="nav-label">' + row.menuName + '</span>';
+                                }
+                            }
+                        },
+                        {
+                            field: 'url',
+                            title: '请求地址',
+                            width: '15%',
+                            align: "left"
+                        },
+                        {
+                            field: 'menuType',
+                            title: '类型',
+                            width: '10%',
+                            align: "left",
+                            template: function(item) {
+                                console.log(item);
+                                if (item.menuType == 'M') {
+                                    return '<span class="label label-success" >目录</span>';
+                                }
+                                else if (item.menuType == 'C') {
+                                    return '<span class="label label-primary">菜单</span>';
+                                }
+                                else if (item.menuType == 'F') {
+                                    return '<span class="label label-warning">按钮</span>';
+                                }
+                                return  '<span class="label label-warning">类型</span>';
+                            }
+                        },
+                        {
+                            title: '状态',
+                            template: function(item){
+                                var tem = [];
+                                console.log(item);
+                                if(item.status == 1){
+                                    return '<input type="checkbox" checked  lay-skin="switch" lay-filter="status" lay-text="开启|关闭">';
+                                }
+                                else if(item.status == 0){
+                                    return '<input type="checkbox" lay-skin="switch" lay-filter="status" lay-text="开启|关闭">';
+                                }
+                                return '<input type="checkbox" lay-skin="switch" lay-filter="status" lay-text="开启|关闭">';
+
+                            }
+                        },
+                        {
+                            field: 'perms',
+                            title: '权限标识',
+                            width: '15%',
+                            align: "left",
+                            template: function(item) {
+                                if(item.perms==""){
+                                    return '暂无权限标识';
+                                }else{
+                                    return value;
+                                }
+                            }
+                        },
+                        {
+                            title: '操作',
+                            width: '20%',
+                            align: "left",
+                            template: function(item){
+                                var tem = [];
+                                tem.push('<a class="btn btn-success btn-xs " href="#" onclick=""><i class="fa fa-edit"></i>编辑</a> ');
+                                tem.push('<a class="btn btn-info btn-xs " href="#" onclick=""><i class="fa fa-plus"></i>新增</a> ');
+                                tem.push('<a class="btn btn-danger btn-xs" href="#" onclick=""></i>删除</a>');
+                                return tem.join(' ')
+                            },
+                        },
+                    ]
+                });
+                treetable.on('bootstrap-table(add)', function (data) {
+                    layer.msg('添加操作');
+                    console.dir(data);
+                })
+
+                treetable.on('bootstrap-table(edit)', function (data) {
+                    layer.msg('编辑操作');
+                    console.dir(data);
+                })
+
+                o('.up-all').click(function () {
+                    treetable.all('up');
+                })
+
+                o('.down-all').click(function () {
+                    treetable.all('down');
+                })
+
+                o('.get-checked').click(function () {
+                    console.dir(treetable.all('checked'));
+                })
+
+                form.on('switch(status)', function (data) {
+                    layer.msg('监听状态操作');
+                    console.dir(data);
+                })
+            })
+
+        </script>
+    </body>
+</html>

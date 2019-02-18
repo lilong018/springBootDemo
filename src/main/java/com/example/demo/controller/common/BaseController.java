@@ -99,4 +99,15 @@ public class BaseController {
             PageHelper.startPage(pageNum, pageSize, orderBy);
         }
     }
+    /**
+     *  {
+     *         "succeed":true, //业务成功的判断
+     *          "code":-1, //业务成功== 0,失败== -1。其他值以后对应不同的操作
+     *          "msg":"消息",
+     *          "data":{},//只会是对象类型和数组类型
+     *                // ... 可能会有其他字段单不恒定。可根据需求处理。但绝不是null
+     *     }
+     */
+
+
 }

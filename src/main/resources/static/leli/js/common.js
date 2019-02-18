@@ -139,7 +139,7 @@ function createMenuItem(dataUrl, menuName) {
 }
 
 /** 设置全局ajax超时处理 */
-$.ajaxSetup({
+/** $.ajaxSetup({
     complete: function(XMLHttpRequest, textStatus) {
         if (textStatus == "parsererror") {
         	$.modal.confirm("登陆超时！请重新登陆！", function() {
@@ -147,4 +147,4 @@ $.ajaxSetup({
         	})
         }
     }
-}); 
+}); */

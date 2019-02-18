@@ -4,7 +4,7 @@ package com.example.demo.controller.user;
 import com.example.demo.controller.common.BaseController;
 import com.example.demo.domain.page.TableDataInfo;
 import com.example.demo.domain.user.User;
-import com.example.demo.service.IUserService;
+import com.example.demo.service.user.IUserService;
 import com.example.demo.utils.AjaxResult;
 import com.example.demo.utils.PageTool;
 import com.github.pagehelper.PageHelper;
