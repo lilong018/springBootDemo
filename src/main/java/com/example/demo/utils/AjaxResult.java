@@ -79,6 +79,21 @@ public class AjaxResult extends HashMap<String, Object>
         json.put("code", 0);
         return json;
     }
+
+    /**
+     *  添加跳转url信息
+     *
+     * @param ajaxResult
+     * @return 成功消息
+     */
+    public static AjaxResult successUrl(AjaxResult ajaxResult,String url)
+    {
+        AjaxResult json = new AjaxResult();
+        json.put("msg", ajaxResult.get("msg"));
+        json.put("code", 0);
+        json.put("url",url);
+        return json;
+    }
     
     /**
      * 返回成功消息

@@ -4,11 +4,15 @@
     <!--<head th:include="include :: header"></head>-->
     <head th:insert="~{include :: header}"></head>
     <body class="gray-bg">
+
         <div class="container-div">
             <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+                <a class="btn btn-success" href="menu/add/0">
+                    <i class="fa fa-plus"></i> 新增
+                </a>
                 <button class="btn btn-success up-all">全部收起</button>
                 <button class="btn btn-primary down-all">全部展开</button>
-                <button class="btn btn-info get-checked">获取选中</button>
+              <!--  <button class="btn btn-info get-checked">获取选中</button>-->
                 <div class="col-sm-12 select-table table-striped">
                     <table class="table full-color-table full-muted-table hover-table layui-table layui-form" id="tree-table">
                     </table>
@@ -44,13 +48,19 @@
                             field: 'menuName',
                             title: '菜单名称',
                             width: '20%',
-                            formatter: function (value, row, index) {
-                                if ($.common.isEmpty(row.icon)) {
-                                    return row.menuName;
+                            template: function (item) {
+                                if ($.common.isEmpty(item.icon)) {
+                                    return item.menuName;
                                 } else {
-                                    return '<i class="' + row.icon + '"></i> <span class="nav-label">' + row.menuName + '</span>';
+                                    return '<i class="' + item.icon + '"></i> <span class="nav-label">' + item.menuName + '</span>';
                                 }
                             }
+                        },
+                        {
+                            field: 'orderNum',
+                            title: '排序',
+                            width: '10%',
+                            align: "left"
                         },
                         {
                             field: 'url',
@@ -101,7 +111,7 @@
                                 if(item.perms==""){
                                     return '暂无权限标识';
                                 }else{
-                                    return value;
+                                    return item.perms;
                                 }
                             }
                         },
@@ -111,22 +121,35 @@
                             align: "left",
                             template: function(item){
                                 var tem = [];
-                                tem.push('<a class="btn btn-success btn-xs " href="#" onclick=""><i class="fa fa-edit"></i>编辑</a> ');
-                                tem.push('<a class="btn btn-info btn-xs " href="#" onclick=""><i class="fa fa-plus"></i>新增</a> ');
-                                tem.push('<a class="btn btn-danger btn-xs" href="#" onclick=""></i>删除</a>');
+                                tem.push('<a class="btn btn-success btn-xs " lay-filter="edit"><i class="fa fa-edit"></i>编辑</a> ');
+                                tem.push('<a class="btn btn-info btn-xs " lay-filter="add" ><i class="fa fa-plus"></i>新增</a> ');
+                                tem.push('<a class="btn btn-danger btn-xs"  lay-filter="remove"></i>删除</a>');
                                 return tem.join(' ')
                             },
                         },
                     ]
                 });
-                treetable.on('bootstrap-table(add)', function (data) {
-                    layer.msg('添加操作');
-                    console.dir(data);
+                treetable.on('treetable(add)', function (data) {
+                    window.location.href = ctx + "menu/add/" + data.item.id;
                 })
 
-                treetable.on('bootstrap-table(edit)', function (data) {
-                    layer.msg('编辑操作');
-                    console.dir(data);
+                treetable.on('treetable(edit)', function (data) {
+                    window.location.href = ctx + "menu/edit/" + data.item.id;
+                })
+                treetable.on('treetable(remove)', function (data) {
+                    $.modal.confirm("确定删除该条" + data.item.menuName + "信息吗？", function() {
+                        $.ajax({
+                            type : 'post',
+                            url: prefix + "/remove/" + data.item.id,
+                            success : function(result) {
+                                if (result.code == web_status.SUCCESS) {
+                                    window.location.reload();
+                                } else {
+                                    $.modal.msgError(result.msg);
+                                }
+                            }
+                        });
+                    });
                 })
 
                 o('.up-all').click(function () {

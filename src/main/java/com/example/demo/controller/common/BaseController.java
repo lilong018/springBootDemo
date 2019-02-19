@@ -43,6 +43,7 @@ public class BaseController {
         return AjaxResult.success();
     }
 
+
     /**
      * 返回失败消息
      */

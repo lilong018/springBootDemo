@@ -540,7 +540,11 @@
                 } else {
                 	$.modal.alertError(result.msg);
                 }
-            	$.modal.closeLoading();
+                if ($.common.isNotEmpty(result.url)) {
+                    window.location.href = ctx + result.url;
+                }else {
+                    $.modal.closeLoading();
+                }
             }
         },
         // 校验封装处理
