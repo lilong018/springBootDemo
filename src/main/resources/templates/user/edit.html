@@ -53,7 +53,7 @@
 			</div>
 			<div class="layui-layer-btn layui-layer-btn-">
 				<a class="layui-layer-btn0" onclick="edit()">确定</a>
-				<a class="layui-layer-btn1" >关闭</a>
+				<a class="layui-layer-btn1" href="javascript:history.go(-1)">关闭</a>
 			</div>
 		</form>
 	</div>
@@ -131,7 +131,6 @@
 	    }
 
         function edit() {
-            alert("edit1");
         	var userId = $("input[name='userId']").val();
         	var userName = $("input[name='userName']").val();
         	var email = $("input[name='email']").val();
