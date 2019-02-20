@@ -18,6 +18,17 @@
     <link th:href="@{/ajax/libs/layui/css/layui.css}" rel="stylesheet"/>
 </head>
 <body>
+
+<ul class="nav nav-second-level collapse" th:fragment="second-level">
+    <li th:each="cmenu : ${menu.children}">
+        <a th:if="${#lists.isEmpty(cmenu.children)}" class="menuItem" th:utext="${cmenu.menuName}" th:href="@{${cmenu.url}}">二级菜单</a>
+        <a th:if="${not #lists.isEmpty(cmenu.children)}" href="#">[[${cmenu.menuName}]]<span class="fa arrow"></span></a>
+        <ul th:if="${not #lists.isEmpty(cmenu.children)}" class="nav nav-third-level">
+            <li th:each="emenu : ${cmenu.children}"><a class="menuItem" th:text="${emenu.menuName}" th:href="@{${emenu.url}}">三级菜单</a></li>
+        </ul>
+    </li>
+</ul>
+
 <div th:fragment="footer">
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>

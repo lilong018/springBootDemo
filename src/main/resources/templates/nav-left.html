@@ -1,0 +1,25 @@
+<!DOCTYPE html >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="left-nav(menus)">
+    <li th:each="menu:${menus}">
+        <a href="#">
+            <i class="fa fa fa-bar-chart-o" th:classappend="${menu.icon}"></i>
+            <span class="nav-label" th:text="${menu.menuName}">一级菜单</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level collapse" >
+            <li th:each="cmenu : ${menu.children}">
+                <a th:if="${#lists.isEmpty(cmenu.children)}" class="menuItem" th:utext="${cmenu.menuName}"
+                   th:href="@{${cmenu.url}}">次级菜单</a>
+                <th:block th:unless="${#lists.isEmpty(cmenu.children)}" th:include="this::left-nav(${cmenu})" />
+            </li>
+        </ul>
+    </li>
+</th:block>
+</body>
+</html>
