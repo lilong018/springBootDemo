@@ -64,10 +64,10 @@
 					</label>
 				</div>
 			</div>-->
-			<div class="layui-layer-btn layui-layer-btn-">
+			<!--<div class="layui-layer-btn layui-layer-btn-">
 				<a class="layui-layer-btn0" onclick="add()">确定</a>
 				<a class="layui-layer-btn1" href="javascript:history.go(-1)">关闭</a>
-			</div>
+			</div>-->
 		</form>
 	</div>
 	<div th:include="include::footer"></div>
@@ -137,8 +137,13 @@
         			$.modal.alertError("系统错误");
         		},
         		success : function(data) {
-                    window.location.href=ctx + "user";
-        		}
+                    if (data.code == web_status.SUCCESS) {
+                        $.modal.msgReload("保存成功,正在刷新数据请稍后……", modal_status.SUCCESS);
+                    } else {
+                        $.modal.alertError(data.msg);
+                    }
+                    $.modal.closeLoading();
+                }
         	});
         }
 

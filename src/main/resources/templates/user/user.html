@@ -11,7 +11,7 @@
 <div class="container-div ui-layout-center">
     <div class="row">
         <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-            <a class="btn btn-success" href="/user/add" th:href="@{/user/add}">
+            <a class="btn btn-success" href="javascript:void(0)" onclick="add()">
                 <i class="fa fa-plus"></i> 新增
             </a>
             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()">
@@ -66,7 +66,7 @@
                     <td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td>
                     <td th:text="${user.userId}"></td>
                     <td th:text="${user.loginName}"></td>
-                    <td th:text="${user.userName}"> </td>
+                    <td th:text="${user.userName}"></td>
                     <!--/* <td > [[${user.userName}]]</td> */-->
                     <!--/*//*/-->
                     <!--<td th:text="${userStat.current.userName}">状态变量：current</td>-->
@@ -90,8 +90,8 @@
                 </tbody>
             </table>
             <div th:utext="${page}"></div>
-        </div>
     </div>
+</div>
 </div>
 <!--<div th:include="include :: footer"></div>-->
 <div th:insert="~{include :: footer}"></div>
@@ -106,6 +106,27 @@
          $('body').layout({west__size: 185});
          queryUserList();
      });*/
+
+    function add() {
+        layer.open({
+            type: 2,
+            maxmin: true,
+            shade: 0.3,
+            title: "添加用户",
+            fix: false,
+            area: [ '800px', '600px'],
+            content: prefix+"/add",
+            shadeClose: true,
+            btn: ['<i class="fa fa-check"></i> 确认', '<i class="fa fa-close"></i> 关闭'],
+            yes: function (index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler();
+            }, cancel: function () {
+                return true;
+            }
+        });
+    }
+
 
     function queryUserList() {
         var options = {
