@@ -52,6 +52,7 @@
                     <ul class="nav nav-second-level">
                         <li class="active"><a class="menuItem" th:href="@{/main}">页面显示</a></li>
                     </ul>
+                    <!--/*@thymesVar id="menus" type="List"*/-->
                     <th:block th:include="nav-left::left-nav(${menus})"/>
                 </li>
 
