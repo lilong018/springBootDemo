@@ -21,7 +21,7 @@ public class Url_File {
             InputStream is = conn.getInputStream();
             BufferedInputStream bis = new BufferedInputStream(is);
 
-            File file = new File("D:/target.jpg");
+            File file = new File("D:/target1.jpg");
             FileOutputStream fos = new FileOutputStream(file);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             byte[] b = new byte[1024];
