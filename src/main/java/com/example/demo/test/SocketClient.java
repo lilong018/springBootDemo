@@ -16,7 +16,7 @@ public class SocketClient {
         String message="你好  yiwangzhibujian";
         socket.getOutputStream().write(message.getBytes("UTF-8"));
         outputStream.close();
-        socket.close();*/
+        socket.close();   */
 
         // 要连接的服务端IP地址和端口
         String host = "127.0.0.1";
@@ -25,7 +25,7 @@ public class SocketClient {
         Socket socket = new Socket(host, port);
         // 建立连接后获得输出流
         OutputStream outputStream = socket.getOutputStream();
-        String message = "你好  yiwangzhibujian";
+        String message = "你好  yiwangzhibujian1";
         socket.getOutputStream().write(message.getBytes("UTF-8"));
         //通过shutdownOutput高速服务器已经发送完数据，后续只能接受数据
         socket.shutdownOutput();
